@@ -1,0 +1,88 @@
+// receiver
+#include <SoftwareSerial.h>
+SoftwareSerial HC05(10, 11);  // Tx=10 || RX = 11
+// int enA = 10;
+int leftMotor_forward = 6;
+int leftMotor_backward = 5;
+// int enB = 7;
+int rightMotor_forward = 8;
+int rightMotor_backward = 9;
+
+void setup() {
+  // pinMode(enA, OUTPUT);
+  // pinMode(enB, OUTPUT);
+  pinMode(leftMotor_forward, OUTPUT);
+  pinMode(leftMotor_backward, OUTPUT);
+  pinMode(rightMotor_forward, OUTPUT);
+  pinMode(rightMotor_backward, OUTPUT);
+  Serial.begin(38400);
+  HC05.begin(38400);  //Baud Rate for AT-command mode
+  Serial.println("***AT commands mode***");
+}
+void loop() {
+
+  // analogWrite(enA, 255);
+  // analogWrite(enB, 255);
+  //receives from sender
+  while (HC05.available()) {  //if HC05 has data
+    char key = HC05.read();
+    Serial.println(key);
+    delay(100);
+
+    if (key == 'W') {
+      Serial.println('W');
+      moveForward(10);
+    } else if (key == 'A') {
+      Serial.println('A');
+      turnLeft(10);
+    } else if (key == 'S') {
+      Serial.println('S');
+      moveBackward(10);
+    } else if (key == 'D') {
+      Serial.println('D');
+      turnRight(10);
+    } else if (key == 'o'){
+      myStop(10);
+    }
+  }
+}
+
+void turnLeft(int duration) {
+  digitalWrite(leftMotor_forward, HIGH);
+  digitalWrite(leftMotor_backward, LOW);
+  digitalWrite(rightMotor_forward, LOW);
+  digitalWrite(rightMotor_backward, LOW);
+  delay(duration);
+}
+
+void turnRight(int duration) {
+  digitalWrite(leftMotor_forward, LOW);
+  digitalWrite(leftMotor_backward, LOW);
+  digitalWrite(rightMotor_forward, HIGH);
+  digitalWrite(rightMotor_backward, LOW);
+  delay(duration);
+}
+
+void myStop(int duration) {
+  digitalWrite(leftMotor_forward, LOW);
+  digitalWrite(leftMotor_backward, LOW);
+  digitalWrite(rightMotor_forward, LOW);
+  digitalWrite(rightMotor_backward, LOW);
+  delay(duration);
+}
+
+void moveForward(int duration) {
+  digitalWrite(leftMotor_forward, HIGH);
+  digitalWrite(leftMotor_backward, LOW);
+  digitalWrite(rightMotor_forward, HIGH);
+  digitalWrite(rightMotor_backward, LOW);
+  delay(duration);
+}
+
+void moveBackward(int duration) {
+  digitalWrite(leftMotor_forward, LOW);
+  digitalWrite(leftMotor_backward, HIGH);
+  digitalWrite(rightMotor_forward, LOW);
+  digitalWrite(rightMotor_backward, HIGH);
+  delay(duration);
+}

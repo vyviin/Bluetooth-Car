@@ -1,0 +1,75 @@
+// sender
+
+#include <SoftwareSerial.h>
+SoftwareSerial HC05(10, 11);  // Tx=10 || RX = 11
+
+// joystick;
+int xpin = A0;
+int ypin = A1;
+int Abut = 2;
+int Bbut = 3;
+int Cbut = 4;
+int Dbut = 5;
+int Ebut = 6;
+int Fbut = 7;
+int joyclick = 8;
+
+void setup() {
+  Serial.begin(38400);
+  HC05.begin(38400);  //Baud Rate for AT-command mode
+
+  pinMode(Abut, INPUT);
+  digitalWrite(Abut, HIGH);
+
+  pinMode(Cbut, INPUT);
+  digitalWrite(Cbut, HIGH);
+
+  pinMode(Bbut, INPUT);
+  digitalWrite(Bbut, HIGH);
+
+  pinMode(Dbut, INPUT);
+  digitalWrite(Dbut, HIGH);
+
+  pinMode(Ebut, INPUT);
+  digitalWrite(Ebut, HIGH);
+
+  pinMode(Fbut, INPUT);
+  digitalWrite(Fbut, HIGH);
+}
+
+void loop() {
+
+  while (Serial.available()) {
+    HC05.write(Serial.read());
+  }
+
+  while (HC05.available()) {
+    Serial.write(HC05.read());
+  }
+
+  // joystick
+  int xval = analogRead(xpin);
+  int yval = analogRead(ypin);
+  if (yval == 1023 && xval == 509) {
+    HC05.write('W');
+    Serial.println('W');
+    delay(10);
+  } else if (yval == 504 && xval == 1023) {
+    HC05.write('D');
+    Serial.println('D');
+    delay(50);
+  } else if (yval == 504 && xval == 0) {
+    HC05.write('A');
+    Serial.println('A');
+    delay(50);
+  } else if (yval == 0 && xval == 509) {
+    HC05.write('S');
+    Serial.println('S');
+    delay(50);
+  } else if (yval == 511 && xval == 517){
+    HC05.write('o');
+    delay(50);
+  }
+}
+
+// AT+ADDR: 98D3,41,F67628

@@ -3,6 +3,8 @@
 ## Overview
 
 I made this for my little cousin bc his parents wouldn't buy him a remote controlled car (so I made him one-- aren't i the best cousin ever?!?!?!!?!?)
+No pictures bc I forgot to take one :(
+
 This project is a Bluetooth-controlled robotic car built with an Arduino, an HC-05 Bluetooth module, and a dual-motor driver. The system is split into two parts:
 
 * **Sender**: A handheld controller with a joystick and multiple buttons. It sends commands to the car over Bluetooth.
